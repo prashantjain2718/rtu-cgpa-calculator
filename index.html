@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SGPA & CGPA Calculator</title>
+
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card" role="application" aria-label="SGPA CGPA Calculator">
+        <header>
+          <div class="logo" aria-hidden="true">RTU</div>
+          <div>
+            <h1>SGPA &amp; CGPA Calculator</h1>
+            <div class="lead">
+              Select semester, adjust grades (defaults to A++), get SGPA and
+              updated CGPA.
+            </div>
+          </div>
+        </header>
+
+        <div class="controls">
+          <label for="semesterSelect" class="small-muted"
+            >Semester
+            <select id="semesterSelect" aria-label="Select semester"></select>
+          </label>
+
+          <div style="flex: 1"></div>
+
+          <button
+            id="resetGrades"
+            class="btn secondary"
+            title="Reset grades to default"
+          >
+            Reset grades
+          </button>
+        </div>
+
+        <div class="grid" style="margin-top: 16px">
+          <div class="left">
+            <div class="table-wrap">
+              <div class="semester-head" role="region" aria-live="polite">
+                <div>
+                  <div class="sem-title" id="semesterTitle">Semester</div>
+                  <div class="sem-info" id="semesterSub">
+                    Subjects & credits
+                  </div>
+                </div>
+                <div class="sem-meta">
+                  <div class="muted-small">
+                    Semester total credits: <strong id="semCredits">—</strong>
+                  </div>
+                  <div class="muted-small">
+                    Previous total credits (auto):
+                    <strong id="prevTotalCredits">—</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div id="subjectsArea" aria-live="polite"></div>
+            </div>
+
+            <div class="note">
+              All subjects, credits and grade scale remain unchanged. Default
+              grade is A++.
+            </div>
+          </div>
+
+          <aside class="right">
+            <div class="panel" aria-label="SGPA">
+              <div class="label">SGPA</div>
+              <div class="big-num" id="sgpaDisplay">—</div>
+              <div class="small-muted">
+                SGPA updates live as you change grades.
+              </div>
+            </div>
+
+            <div class="panel" style="margin-top: 12px" aria-label="CGPA">
+              <div class="label">CGPA</div>
+
+              <div style="margin-top: 8px">
+                <input
+                  id="prevCgpa"
+                  type="text"
+                  placeholder="Enter previous CGPA (e.g. 7.45)"
+                  aria-label="Previous CGPA"
+                  style="width: 100%; box-sizing: border-box"
+                />
+              </div>
+
+              <div style="margin-top: 8px; display: flex; gap: 8px">
+                <input
+                  id="curSgpa"
+                  type="text"
+                  placeholder="Current SGPA (auto)"
+                  aria-label="Current SGPA"
+                  style="flex: 1"
+                />
+                <button id="calcCgpaBtn" class="btn">Compute</button>
+              </div>
+
+              <div class="info-row" style="margin-top: 10px">
+                <div class="muted-small">New CGPA</div>
+                <div id="cgpaOut" style="font-weight: 800">—</div>
+              </div>
+
+              <div class="info-row">
+                <div class="muted-small">Credits used (previous)</div>
+                <div id="creditsUsedPrev">—</div>
+              </div>
+
+              <div class="info-row">
+                <div class="muted-small">Credits used (current sem)</div>
+                <div id="creditsUsedCur">—</div>
+              </div>
+            </div>
+
+            <div style="height: 10px"></div>
+            <div class="panel" aria-hidden="true">
+              <div class="label">Actions</div>
+              <div style="display: flex; gap: 8px; margin-top: 8px">
+                <button id="exportBtn" class="btn secondary">
+                  Copy result
+                </button>
+                <button id="printBtn" class="btn">Print</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="print-summary">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <div id="printSemesterName" style="font-weight: 800"></div>
+            <div id="printDate" style="font-size: 12px"></div>
+          </div>
+          <div class="print-card" id="printMetrics" style="margin-top: 8px">
+            <div class="footer-brand" style="margin-top: 10px">
+              Designed & Developed by Prashant Jain
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">Responsive • Clean • Fast print</div>
+        <div class="footer-brand">Designed & Developed by Prashant Jain</div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

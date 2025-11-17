@@ -26,7 +26,7 @@ All 8 semesters are pre-loaded with correct subjects, credits, labs, electives, 
 - No frameworks required
 
 ## 🔗 Live Demo
-[Add your hosted link here]
+[https://sgpa-and-cpga-calculator.vercel.app/]
 
 ## ✨ Author
 **Designed & Developed by Prashant Jain**

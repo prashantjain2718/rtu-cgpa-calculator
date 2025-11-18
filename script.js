@@ -1610,3 +1610,160 @@ window.addEventListener("DOMContentLoaded", () => {
   const fallback = document.getElementById("fallbackTable");
   if (fallback) fallback.remove();
 });
+
+/* ============================================
+    HELPER FUNCTIONS
+   ============================================ */
+
+function ordinal(n) {
+  if (n % 10 === 1 && n % 100 !== 11) return n + "st";
+  if (n % 10 === 2 && n % 100 !== 12) return n + "nd";
+  if (n % 10 === 3 && n % 100 !== 13) return n + "rd";
+  return n + "th";
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"]/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;"
+  }[m]));
+}
+
+
+/* ============================================
+    BRANCH + SEMESTER POPULATION
+   ============================================ */
+
+function populateBranches() {
+  branchSelect.innerHTML = "";
+  const branches = Object.keys(ALL_DATA);
+
+  branches.forEach(branchName => {
+    const opt = document.createElement("option");
+    opt.value = branchName;
+    opt.textContent = branchName;
+    branchSelect.appendChild(opt);
+  });
+}
+
+function populateSemesters(branchName) {
+  semesterSelect.innerHTML = "";
+
+  const semesters = ALL_DATA[branchName];
+  if (!semesters) return;
+
+  semesters.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = `${ordinal(s.id)} Semester`;
+    semesterSelect.appendChild(opt);
+  });
+}
+
+
+/* ============================================
+    CREDIT CALCULATION HELPERS
+   ============================================ */
+
+function sumCreditsOfSemester(branchName, semId) {
+  const branchData = ALL_DATA[branchName];
+  if (!branchData) return 0;
+
+  const sem = branchData.find(s => s.id === semId);
+  if (!sem) return 0;
+
+  return sem.subjects.reduce((acc, sub) => acc + Number(sub.credits), 0);
+}
+
+function sumCreditsUpTo(branchName, semIdExcluding) {
+  const branchData = ALL_DATA[branchName];
+  if (!branchData) return 0;
+
+  let total = 0;
+  for (let s of branchData) {
+    if (s.id < semIdExcluding) {
+      total += s.subjects.reduce((a, sub) => a + Number(sub.credits), 0);
+    }
+  }
+  return total;
+}
+
+
+/* ============================================
+    MAIN RENDER FUNCTION
+   ============================================ */
+
+function renderSemester(branchName, semId) {
+  const branchData = ALL_DATA[branchName];
+  if (!branchData) return;
+
+  const sem = branchData.find(s => s.id === Number(semId));
+  if (!sem) return;
+
+  semesterTitle.textContent = `${ordinal(sem.id)} Semester (${branchName})`;
+
+  const table = document.createElement("table");
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Course Code</th>
+        <th>Subject</th>
+        <th>Credits</th>
+        <th>Grade</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+  const tbody = table.querySelector("tbody");
+
+  sem.subjects.forEach(sub => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td class="code">${escapeHtml(sub.code)}</td>
+      <td>${escapeHtml(sub.name)}</td>
+      <td>${sub.credits}</td>
+      <td>
+        <select class="grade" data-credits="${sub.credits}">
+        </select>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+
+    const select = tr.querySelector("select.grade");
+
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "-- select --";
+    select.appendChild(placeholder);
+
+    GRADES.forEach(g => {
+      const opt = document.createElement("option");
+      opt.value = g.value;
+      opt.textContent = g.label;
+      select.appendChild(opt);
+    });
+
+    // Default = A++ (10)
+    select.value = "10";
+    select.addEventListener("change", computeSGPA);
+  });
+
+  subjectsArea.innerHTML = "";
+  subjectsArea.appendChild(table);
+
+  const semCredits = sumCreditsOfSemester(branchName, sem.id);
+  const prevCredits = sumCreditsUpTo(branchName, sem.id);
+
+  creditsUsedPrev.textContent = prevCredits;
+  creditsUsedCur.textContent = semCredits;
+
+  cgpaOut.textContent = "—";
+  prevCgpaInput.value = "";
+
+  computeSGPA();
+}

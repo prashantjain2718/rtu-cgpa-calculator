@@ -1,4 +1,17 @@
-/* Theme: Pro Dark (Slate & Cyan) */
+/* ======================================= */
+/* FONT OPTIMIZATION (SEO + PERFORMANCE)   */
+/* ======================================= */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Inter');
+}
+
+/* ======================================= */
+/* THEME: PRO DARK (SLATE + CYAN)          */
+/* ======================================= */
 :root {
   --bg: #101727;
   --card: #1f2937;
@@ -15,6 +28,23 @@
   font-size: 15px;
 }
 
+/* ======================================= */
+/* LIGHT MODE FALLBACK (SEO + UX)          */
+/* ======================================= */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f7f7f7;
+    --card: #ffffff;
+    --card-light: #f0f0f0;
+    --text: #1f2937;
+    --text-strong: #111827;
+    --muted: #6b7280;
+  }
+}
+
+/* ======================================= */
+/* BASE STRUCTURE                          */
+/* ======================================= */
 html,
 body {
   height: 100%;
@@ -22,25 +52,32 @@ body {
   background: var(--bg);
   color: var(--text);
 }
+
 .wrap {
   max-width: 1100px;
   margin: 28px auto;
   padding: 20px;
 }
+
 .card {
   background: var(--card);
   border-radius: var(--radius);
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); /* optimised shadow */
   padding: 18px;
   overflow: hidden;
 }
+
+/* ======================================= */
+/* HEADER                                  */
+/* ======================================= */
 header {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
+
 .logo {
   width: 56px;
   height: 56px;
@@ -52,19 +89,24 @@ header {
   color: var(--bg);
   font-weight: 700;
   font-size: 20px;
-  box-shadow: 0 6px 18px rgba(34, 211, 238, 0.15);
+  box-shadow: 0 4px 14px rgba(34, 211, 238, 0.18); /* lighter GPU cost */
 }
+
 h1 {
   margin: 0;
   font-size: 20px;
   color: var(--text-strong);
 }
+
 .lead {
   color: var(--muted);
   font-size: 13px;
   margin-top: 4px;
 }
 
+/* ======================================= */
+/* CONTROLS                                */
+/* ======================================= */
 .controls {
   display: flex;
   gap: 12px;
@@ -72,6 +114,7 @@ h1 {
   align-items: center;
   flex-wrap: wrap;
 }
+
 select,
 input[type="text"],
 button {
@@ -83,13 +126,17 @@ button {
   font-size: 14px;
   outline: none;
 }
+
 select:focus,
 input:focus,
 button:focus {
-  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
   border-color: var(--accent);
 }
 
+/* ======================================= */
+/* GRID                                    */
+/* ======================================= */
 .grid {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -97,16 +144,20 @@ button:focus {
   margin-top: 18px;
 }
 
-/* Left: table area */
+/* ======================================= */
+/* LEFT TABLE SECTION                      */
+/* ======================================= */
 .left {
   min-width: 0;
 }
+
 .table-wrap {
   background: #1a222f;
   border-radius: 10px;
   padding: 12px;
   border: 1px solid var(--border-color);
 }
+
 .semester-head {
   display: flex;
   justify-content: space-between;
@@ -116,10 +167,12 @@ button:focus {
   background: rgba(34, 211, 238, 0.05);
   margin-bottom: 10px;
 }
+
 .sem-title {
   font-weight: 700;
   color: var(--text-strong);
 }
+
 .sem-info {
   color: var(--muted);
   font-size: 13px;
@@ -128,47 +181,52 @@ button:focus {
 table {
   width: 100%;
   border-collapse: collapse;
-  border-spacing: 0;
   font-size: 14px;
 }
+
 thead th {
   font-weight: 700;
   padding: 10px 12px;
-  text-align: left;
   color: var(--muted);
   font-size: 13px;
+  text-align: left;
   border-bottom: 1px solid var(--border-color);
 }
+
 tbody tr {
   vertical-align: middle;
 }
+
 tbody td {
   padding: 12px 12px;
-  background: transparent;
-  border: 0;
-  vertical-align: middle;
   border-bottom: 1px solid var(--border-color);
 }
+
 tbody tr:last-child td {
   border-bottom: 0;
 }
+
 td.code {
   width: 110px;
   color: var(--accent);
   font-weight: 600;
 }
+
 td.name {
   color: var(--text-strong);
 }
+
 td.credits {
   width: 90px;
   text-align: center;
   color: var(--text);
 }
+
 td.select {
   width: 170px;
   text-align: center;
 }
+
 select.grade {
   width: 140px;
   padding: 8px 10px;
@@ -178,40 +236,46 @@ select.grade {
   font-weight: 600;
   color: var(--text-strong);
 }
+
 .muted-small {
   color: var(--muted);
   font-size: 12px;
 }
 
-/* Right: summary & cgpa */
+/* ======================================= */
+/* RIGHT PANELS                            */
+/* ======================================= */
 .right {
   position: relative;
 }
+
 .panel {
   background: var(--card);
   border-radius: 10px;
   padding: 14px;
   border: 1px solid var(--border-color);
-  box-shadow: none;
 }
+
 .panel + .panel {
   margin-top: 12px;
 }
+
 .label {
   font-size: 13px;
   color: var(--muted);
   margin-bottom: 6px;
 }
+
 .big-num {
   font-size: 28px;
   font-weight: 800;
   color: var(--accent);
-  margin: 6px 0 2px 0; /* Polished margin */
+  margin: 6px 0 2px 0;
 }
+
 .info-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 6px 0;
   border-top: 1px dashed var(--border-color);
   margin-top: 8px;
@@ -219,6 +283,9 @@ select.grade {
   font-size: 13px;
 }
 
+/* ======================================= */
+/* BUTTONS                                 */
+/* ======================================= */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -231,31 +298,39 @@ select.grade {
   cursor: pointer;
   font-weight: 700;
 }
+
 .btn:hover {
   background: var(--accent-hover);
 }
+
 .btn.secondary {
   background: var(--card-light);
   color: var(--accent);
   border: 1px solid var(--border-color);
 }
+
 .btn.secondary:hover {
   background: #374151;
 }
+
 .small-muted {
   font-size: 12px;
   color: var(--muted);
 }
 
-/* === RESPONSIVE FIX === */
+/* ======================================= */
+/* RESPONSIVE                              */
+/* ======================================= */
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+
   thead {
     display: none;
   }
+
   tbody tr {
     display: block;
     padding: 12px;
@@ -263,44 +338,38 @@ select.grade {
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 8px;
   }
+
   tbody td {
     display: block;
     padding: 8px 0;
     border-bottom: 0;
   }
-  td.code {
-    font-size: 13px;
-  }
-  td.name {
-    font-weight: 700;
-    margin-top: 6px;
-  }
-  td.credits {
-    text-align: left;
-  }
-  td.select {
-    text-align: left;
-    margin-top: 8px;
-  }
+
   .controls {
     flex-direction: column;
     align-items: stretch;
   }
+
   .semester-head {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
   }
+
   .right {
     position: static;
   }
 }
 
+/* ======================================= */
+/* FOOTER                                  */
+/* ======================================= */
 .note {
   margin-top: 12px;
   color: var(--muted);
   font-size: 13px;
 }
+
 .footer {
   margin-top: 14px;
   color: var(--muted);
@@ -316,18 +385,14 @@ select.grade {
 }
 
 /* ======================================= */
-/* PRINT STYLES (UNCHANGED)              */
+/* PRINT                                   */
 /* ======================================= */
 @media print {
   html,
   body {
     background: #fff;
   }
-  * {
-    box-shadow: none !important;
-    background: transparent !important;
-    color: #000 !important;
-  }
+
   header,
   .controls,
   .right,
@@ -338,45 +403,47 @@ select.grade {
   .sem-meta {
     display: none !important;
   }
+
   .wrap {
     max-width: 100%;
     margin: 0;
     padding: 0;
   }
+
   .card {
     border: 0;
     padding: 0;
-    box-shadow: none;
   }
+
   .table-wrap {
     border: 0;
     padding: 0;
   }
+
   table {
-    border-collapse: collapse;
-    border-spacing: 0;
     width: 100%;
+    border-collapse: collapse;
   }
+
   thead {
     display: table-header-group;
   }
+
   tbody tr {
     display: table-row;
     background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    margin: 0;
   }
+
   tbody td {
-    display: table-cell;
     padding: 8px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #ccc;
   }
+
   .print-summary {
     display: block !important;
     padding: 12px 0;
-    margin-bottom: 8px;
   }
+
   .print-card {
     border: 1px solid #000;
     padding: 8px;
@@ -384,7 +451,7 @@ select.grade {
   }
 }
 
-/* hide print summary in screen */
+/* hide summary on screen */
 .print-summary {
   display: none;
 }

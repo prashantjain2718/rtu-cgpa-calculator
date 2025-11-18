@@ -29,11 +29,9 @@
         "name": "RTU CGPA Calculator",
         "applicationCategory": "EducationalApplication",
         "description": "Free tool to calculate SGPA and CGPA for RTU students.",
-        "operatingSystem": "Any",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "INR"
+        "creator": {
+          "@type": "Person",
+          "name": "Prashant Jain"
         }
       }
     </script>
@@ -95,7 +93,7 @@
         border-radius: var(--radius);
         padding: 24px;
         box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         position: relative;
         overflow: hidden;
       }
@@ -410,7 +408,19 @@
       }
 
       /* =====================================================
-       6. RESPONSIVE DESIGN (MOBILE)
+       6. FOOTER / BRANDING
+       ===================================================== */
+      .footer-branding {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 14px;
+      }
+
+      /* =====================================================
+       7. RESPONSIVE DESIGN (MOBILE)
        ===================================================== */
       @media (max-width: 900px) {
         .calculator-grid {
@@ -460,7 +470,7 @@
       }
 
       /* =====================================================
-       7. PRINT STYLES (A4 OPTIMIZED)
+       8. PRINT STYLES (A4 OPTIMIZED - SPACED)
        ===================================================== */
       .print-header {
         display: none;
@@ -504,37 +514,39 @@
         .print-header {
           display: block;
           border-bottom: 2px solid #000;
-          margin-bottom: 20px;
-          padding-bottom: 10px;
+          margin-bottom: 25px;
+          padding-bottom: 15px;
         }
         .print-header h1 {
-          font-size: 18pt;
+          font-size: 20pt;
           margin: 0;
           color: #000;
         }
         .print-meta {
-          font-size: 10pt;
-          margin-top: 5px;
+          font-size: 11pt;
+          margin-top: 8px;
           color: #444;
         }
 
-        /* Table Layout Fix */
+        /* Table Layout Fix with Padding */
         .calculator-grid {
           display: block;
         }
         .subjects-container {
           border: 1px solid #000;
           border-radius: 0;
-          margin-bottom: 20px;
+          margin-bottom: 30px;
           background: transparent;
         }
         .semester-header {
           background: #f0f0f0;
           border-bottom: 1px solid #000;
           color: #000;
+          padding: 10px 15px;
         }
         .sem-title {
           color: #000;
+          font-size: 12pt;
         }
         .credits-badge {
           color: #000;
@@ -559,16 +571,18 @@
           background: transparent !important;
           border: none;
         }
+
+        /* Added padding for comfortable reading */
         .subjects-container th {
           background: #f0f0f0;
           color: #000;
           border: 1px solid #000;
-          padding: 5px;
+          padding: 10px 12px; /* Spacing */
         }
         .subjects-container td {
           border: 1px solid #000;
           color: #000;
-          padding: 5px;
+          padding: 10px 12px; /* Spacing */
           display: table-cell !important;
         }
         .subjects-container td::before {
@@ -590,20 +604,20 @@
         /* Results Summary */
         .results-panel {
           position: static;
-          margin-top: 20px;
+          margin-top: 30px;
           display: block;
         }
         .result-box {
           border: 1px solid #000;
           background: transparent;
-          padding: 10px;
+          padding: 15px;
           text-align: left;
           display: flex;
           justify-content: space-between;
           align-items: center;
         }
         .sgpa-display {
-          font-size: 16pt;
+          font-size: 18pt;
           color: #000;
           background: none;
           -webkit-text-fill-color: #000;
@@ -611,6 +625,7 @@
         }
         .result-label {
           color: #000;
+          font-size: 11pt;
         }
 
         .stats-grid {
@@ -618,7 +633,7 @@
           margin: 0;
           padding: 0;
           display: flex;
-          gap: 30px;
+          gap: 40px;
         }
         .stat-row {
           display: block;
@@ -627,6 +642,14 @@
         }
         .stat-row span {
           color: #000 !important;
+        }
+
+        /* Branding in Print */
+        .footer-branding {
+          display: block !important;
+          border-top: 1px solid #000;
+          margin-top: 50px;
+          color: #000;
         }
       }
     </style>
@@ -645,7 +668,7 @@
           <div>
             <h1>RTU CGPA Calculator</h1>
             <div class="lead">
-              Official grading system for CSE, IT, AI&DS, ME, EE, ECE
+              Official grading system for CSE, IT, AI&DS, ME, ECE, EE
             </div>
           </div>
         </header>
@@ -869,6 +892,10 @@
           </li>
         </ul>
       </section>
+
+      <div class="footer-branding">
+        Developed by <strong>Prashant Jain</strong>
+      </div>
     </div>
 
     <script>
@@ -1335,7 +1362,7 @@
             name: "7th Semester",
             subjects: [
               { code: "7AID4-01", name: "Big Data Analytics", credits: 3 },
-              { code: "OE1", name: "Open Elective - I", credits: 3 },
+              { code: "OE1", name: "Open Elective – I", credits: 3 },
               { code: "7AID4-21", name: "BDA Lab", credits: 2 },
               { code: "7AID4-22", name: "R Programming Lab", credits: 2 },
               { code: "7AID7-30", name: "Industrial Training", credits: 2.5 },
@@ -1348,7 +1375,7 @@
             name: "8th Semester",
             subjects: [
               { code: "8AID4-01", name: "Deep Learning", credits: 3 },
-              { code: "OE2", name: "Open Elective - II", credits: 3 },
+              { code: "OE2", name: "Open Elective – II", credits: 3 },
               { code: "8AID4-21", name: "DL Lab", credits: 1 },
               { code: "8AID4-22", name: "Robot Programming Lab", credits: 1 },
               { code: "8AID7-50", name: "Project", credits: 7 },
@@ -1599,6 +1626,247 @@
           },
         ],
         ME: [
+          {
+            id: 1,
+            name: "1st Semester",
+            subjects: [
+              {
+                code: "1FY2-01",
+                name: "Engineering Mathematics-I",
+                credits: 4,
+              },
+              { code: "1FY2-03", name: "Engineering Chemistry", credits: 4 },
+              { code: "1FY1-05", name: "Human Values", credits: 2 },
+              {
+                code: "1FY3-07",
+                name: "Basic Mechanical Engineering",
+                credits: 2,
+              },
+              { code: "1FY3-09", name: "Basic Civil Engineering", credits: 2 },
+              {
+                code: "1FY2-21",
+                name: "Engineering Chemistry Lab",
+                credits: 1,
+              },
+              { code: "1FY2-23", name: "Human Values Activities", credits: 1 },
+              {
+                code: "1FY3-25",
+                name: "Manufacturing Practices Workshop",
+                credits: 1.5,
+              },
+              {
+                code: "1FY3-27",
+                name: "Basic Civil Engineering Lab",
+                credits: 1,
+              },
+              {
+                code: "1FY3-28",
+                name: "Computer Aided Engineering Graphics",
+                credits: 1.5,
+              },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 2,
+            name: "2nd Semester",
+            subjects: [
+              {
+                code: "2FY2-01",
+                name: "Engineering Mathematics-II",
+                credits: 4,
+              },
+              { code: "2FY2-02", name: "Engineering Physics", credits: 4 },
+              { code: "2FY1-04", name: "Communication Skills", credits: 2 },
+              {
+                code: "2FY3-06",
+                name: "Programming for Problem Solving",
+                credits: 2,
+              },
+              {
+                code: "2FY3-08",
+                name: "Basic Electrical Engineering",
+                credits: 2,
+              },
+              { code: "2FY2-20", name: "Engineering Physics Lab", credits: 1 },
+              { code: "2FY2-22", name: "Language Lab", credits: 1 },
+              {
+                code: "2FY3-24",
+                name: "Computer Programming Lab",
+                credits: 1.5,
+              },
+              {
+                code: "2FY3-26",
+                name: "Basic Electrical Engineering Lab",
+                credits: 1,
+              },
+              {
+                code: "2FY3-29",
+                name: "Computer Aided Machine Drawing",
+                credits: 1.5,
+              },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 3,
+            name: "3rd Semester (AI&DS)",
+            subjects: [
+              {
+                code: "3AID2-01",
+                name: "Advanced Engineering Mathematics",
+                credits: 3,
+              },
+              { code: "3AID1-02", name: "Technical Communication", credits: 2 },
+              { code: "3AID3-04", name: "Digital Electronics", credits: 3 },
+              {
+                code: "3AID4-05",
+                name: "Data Structures and Algorithms",
+                credits: 3,
+              },
+              {
+                code: "3AID4-06",
+                name: "Object Oriented Programming",
+                credits: 3,
+              },
+              { code: "3AID4-07", name: "Software Engineering", credits: 3 },
+              { code: "3AID4-21", name: "DSA Lab", credits: 1.5 },
+              { code: "3AID4-22", name: "OOP Lab", credits: 1.5 },
+              { code: "3AID4-23", name: "Software Engg Lab", credits: 1.5 },
+              {
+                code: "3AID4-24",
+                name: "Digital Electronics Lab",
+                credits: 1.5,
+              },
+              { code: "3AID7-30", name: "Industrial Training", credits: 1 },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 4,
+            name: "4th Semester (AI&DS)",
+            subjects: [
+              { code: "4AID2-01", name: "Discrete Mathematics", credits: 3 },
+              {
+                code: "4AID1-03",
+                name: "Managerial Economics & Financial Accounting",
+                credits: 2,
+              },
+              {
+                code: "4AID3-04",
+                name: "Microprocessor & Interfaces",
+                credits: 3,
+              },
+              {
+                code: "4AID4-05",
+                name: "Database Management System",
+                credits: 3,
+              },
+              { code: "4AID4-06", name: "Theory of Computation", credits: 3 },
+              {
+                code: "4AID4-07",
+                name: "Data Communication & Computer Networks",
+                credits: 3,
+              },
+              { code: "4AID4-21", name: "Microprocessor Lab", credits: 1 },
+              { code: "4AID4-22", name: "DBMS Lab", credits: 1.5 },
+              {
+                code: "4AID4-23",
+                name: "Network Programming Lab",
+                credits: 1.5,
+              },
+              {
+                code: "4AID4-24",
+                name: "Linux Shell Programming Lab",
+                credits: 1,
+              },
+              { code: "4AID4-25", name: "Java Lab", credits: 1 },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 5,
+            name: "5th Semester (AI&DS)",
+            subjects: [
+              {
+                code: "5AID3-01",
+                name: "Data Mining - Concepts & Techniques",
+                credits: 2,
+              },
+              { code: "5AID4-02", name: "Compiler Design", credits: 3 },
+              { code: "5AID4-03", name: "Operating System", credits: 3 },
+              {
+                code: "5AID4-04",
+                name: "Computer Graphics & Multimedia",
+                credits: 3,
+              },
+              { code: "5AID4-05", name: "Analysis of Algorithms", credits: 3 },
+              { code: "PEC", name: "Professional Elective", credits: 2 },
+              { code: "5AID4-21", name: "Computer Graphics Lab", credits: 1 },
+              { code: "5AID4-22", name: "Compiler Design Lab", credits: 1 },
+              { code: "5AID4-23", name: "AOA Lab", credits: 1 },
+              { code: "5AID4-24", name: "Advanced Java Lab", credits: 1 },
+              { code: "5AID7-30", name: "Industrial Training", credits: 2.5 },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 6,
+            name: "6th Semester (AI&DS)",
+            subjects: [
+              {
+                code: "6AID3-01",
+                name: "Digital Image Processing",
+                credits: 2,
+              },
+              { code: "6AID4-02", name: "Machine Learning", credits: 3 },
+              {
+                code: "6AID4-03",
+                name: "Information Security Systems",
+                credits: 2,
+              },
+              {
+                code: "6AID4-04",
+                name: "Computer Architecture & Organization",
+                credits: 3,
+              },
+              { code: "6AID4-05", name: "Principles of AI", credits: 2 },
+              { code: "6AID4-06", name: "Cloud Computing", credits: 3 },
+              { code: "PEC", name: "Professional Elective", credits: 2 },
+              { code: "6AID4-21", name: "DIP Lab", credits: 1.5 },
+              { code: "6AID4-22", name: "ML Lab", credits: 1.5 },
+              { code: "6AID4-23", name: "Python Lab", credits: 1.5 },
+              { code: "6AID4-24", name: "Mobile App Dev Lab", credits: 1.5 },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 7,
+            name: "7th Semester (AI&DS)",
+            subjects: [
+              { code: "7AID4-01", name: "Big Data Analytics", credits: 3 },
+              { code: "OE1", name: "Open Elective – I", credits: 3 },
+              { code: "7AID4-21", name: "BDA Lab", credits: 2 },
+              { code: "7AID4-22", name: "R Programming Lab", credits: 2 },
+              { code: "7AID7-30", name: "Industrial Training", credits: 2.5 },
+              { code: "7AID7-40", name: "Seminar", credits: 2 },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+          {
+            id: 8,
+            name: "8th Semester (AI&DS)",
+            subjects: [
+              { code: "8AID4-01", name: "Deep Learning", credits: 3 },
+              { code: "OE2", name: "Open Elective – II", credits: 3 },
+              { code: "8AID4-21", name: "DL Lab", credits: 1 },
+              { code: "8AID4-22", name: "Robot Programming Lab", credits: 1 },
+              { code: "8AID7-50", name: "Project", credits: 7 },
+              { code: "SODECA", name: "SODECA", credits: 0.5 },
+            ],
+          },
+        ],
+        ECE: [
           {
             id: 1,
             name: "1st Semester",

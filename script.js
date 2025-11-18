@@ -1767,3 +1767,124 @@ function renderSemester(branchName, semId) {
 
   computeSGPA();
 }
+
+/* ============================================
+    SGPA CALCULATION
+   ============================================ */
+
+function computeSGPA() {
+  const selects = subjectsArea.querySelectorAll("select.grade");
+  let num = 0, den = 0;
+
+  selects.forEach(sel => {
+    const g = Number(sel.value);
+    const c = Number(sel.getAttribute("data-credits"));
+
+    if (!isNaN(g)) {
+      num += g * c;
+      den += c;
+    }
+  });
+
+  if (den === 0) {
+    sgpaDisplay.textContent = "—";
+    curSgpaInput.value = "";
+    return;
+  }
+
+  const sgpa = Math.round((num / den) * 100) / 100;
+  sgpaDisplay.textContent = sgpa.toFixed(2);
+  curSgpaInput.value = sgpa.toFixed(2);
+}
+
+
+/* ============================================
+    CGPA CALCULATION
+   ============================================ */
+
+function computeCGPA() {
+  const prevCgpa = parseFloat(prevCgpaInput.value);
+  if (isNaN(prevCgpa)) {
+    alert("Enter a valid previous CGPA.");
+    return;
+  }
+
+  const curSgpa = parseFloat(curSgpaInput.value);
+  if (isNaN(curSgpa)) {
+    alert("SGPA not calculated.");
+    return;
+  }
+
+  const branch = branchSelect.value;
+  const semId = Number(semesterSelect.value);
+
+  const prevCredits = sumCreditsUpTo(branch, semId);
+  const curCredits = sumCreditsOfSemester(branch, semId);
+
+  const numerator = prevCgpa * prevCredits + curSgpa * curCredits;
+  const denom = prevCredits + curCredits;
+
+  const finalCgpa =
+    denom === 0
+      ? curSgpa
+      : Math.round((numerator / denom) * 100) / 100;
+
+  cgpaOut.textContent = finalCgpa.toFixed(2);
+}
+
+
+/* ============================================
+    RESET BUTTON
+   ============================================ */
+
+function resetGrades() {
+  subjectsArea.querySelectorAll("select.grade").forEach(sel => {
+    sel.value = "10"; // A++
+  });
+  computeSGPA();
+}
+
+
+/* ============================================
+    COPY RESULT TO CLIPBOARD
+   ============================================ */
+
+async function copyResult() {
+  const branch = branchSelect.value;
+  const semId = Number(semesterSelect.value);
+
+  const sgpa = curSgpaInput.value || sgpaDisplay.textContent;
+  const cgpa = cgpaOut.textContent;
+
+  const text = `${ordinal(semId)} Semester (${branch})
+SGPA: ${sgpa}
+CGPA: ${cgpa}`;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Copied.");
+  } catch {
+    alert("Copy failed.");
+  }
+}
+
+
+/* ============================================
+    PRINT (WITH SUMMARY)
+   ============================================ */
+
+function preparePrint() {
+  const branch = branchSelect.value;
+  const semId = Number(semesterSelect.value);
+
+  printSemesterName.textContent = `${ordinal(semId)} Semester (${branch})`;
+  printDate.textContent = new Date().toLocaleString();
+
+  const sgpa = curSgpaInput.value || sgpaDisplay.textContent;
+  const cgpa = cgpaOut.textContent;
+
+  printMetrics.innerHTML = `
+    <div style="font-size:14px;margin-bottom:6px;">SGPA: <strong>${sgpa}</strong></div>
+    <div style="font-size:14px;">CGPA: <strong>${cgpa}</strong></div>
+  `;
+}

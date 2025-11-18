@@ -1,4 +1,7 @@
-/* === NEW: Central Data Object === */
+/* ============================================
+   MASTER DATA (ALL BRANCHES + ALL SEMESTERS)
+   ============================================ */
+
 const ALL_DATA = {
   CSE: [
     {
@@ -1573,334 +1576,37 @@ const GRADES = [
   { label: "F (0)", value: 0 },
 ];
 
-/* === DOM refs === */
+
+/* ============================================
+    DOM ELEMENTS (MATCHES NEW HTML)
+   ============================================ */
+
 const branchSelect = document.getElementById("branchSelect");
 const semesterSelect = document.getElementById("semesterSelect");
+
 const subjectsArea = document.getElementById("subjectsArea");
 const semesterTitle = document.getElementById("semesterTitle");
-const semCreditsEl = document.getElementById("semCredits");
-const prevTotalCreditsEl = document.getElementById("prevTotalCredits");
+
 const sgpaDisplay = document.getElementById("sgpaDisplay");
 const prevCgpaInput = document.getElementById("prevCgpa");
 const curSgpaInput = document.getElementById("curSgpa");
-const calcCgpaBtn = document.getElementById("calcCgpaBtn");
+
 const cgpaOut = document.getElementById("cgpaOut");
 const creditsUsedPrev = document.getElementById("creditsUsedPrev");
 const creditsUsedCur = document.getElementById("creditsUsedCur");
+
 const resetBtn = document.getElementById("resetGrades");
+const calcCgpaBtn = document.getElementById("calcCgpaBtn");
+
 const exportBtn = document.getElementById("exportBtn");
 const printBtn = document.getElementById("printBtn");
-const printSemesterName = document.getElementById("printSemesterName");
-const printMetrics = document.getElementById("printMetrics");
-const printDate = document.getElementById("printDate");
 
-/* === Core Functions === */
 
-/* Populate semester selector with clean display names */
-function ordinal(n) {
-  if (n % 10 === 1 && n % 100 !== 11) return n + "st";
-  if (n % 10 === 2 && n % 100 !== 12) return n + "nd";
-  if (n % 10 === 3 && n % 100 !== 13) return n + "rd";
-  return n + "th";
-}
+/* ============================================
+    REMOVE STATIC FALLBACK WHEN JS RUNS
+   ============================================ */
 
-/* Populate branch dropdown */
-function populateBranches() {
-  branchSelect.innerHTML = ""; // Clear existing
-  const branches = Object.keys(ALL_DATA);
-  branches.forEach((branchName) => {
-    const opt = document.createElement("option");
-    opt.value = branchName;
-    opt.textContent = branchName;
-    branchSelect.appendChild(opt);
-  });
-}
-
-/* Populate semester dropdown based on selected branch */
-function populateSemesters(branchName) {
-  semesterSelect.innerHTML = ""; // Clear existing
-  const semesters = ALL_DATA[branchName];
-  if (!semesters) return;
-
-  semesters.forEach((s) => {
-    const opt = document.createElement("option");
-    opt.value = s.id;
-    opt.textContent = `${ordinal(s.id)} Semester`;
-    semesterSelect.appendChild(opt);
-  });
-}
-
-/* Helper to sum credits for a specific semester */
-function sumCreditsOfSemester(branchName, semId) {
-  const branchData = ALL_DATA[branchName];
-  if (!branchData) return 0;
-  const sem = branchData.find((s) => s.id === semId);
-  if (!sem) return 0;
-  return sem.subjects.reduce((acc, sub) => acc + Number(sub.credits), 0);
-}
-
-/* Helper to sum all credits *before* a specific semester */
-function sumCreditsUpTo(branchName, semIdExcluding) {
-  const branchData = ALL_DATA[branchName];
-  if (!branchData) return 0;
-
-  let total = 0;
-  for (let i = 0; i < branchData.length; i++) {
-    const sid = branchData[i].id;
-    if (sid < semIdExcluding) {
-      total += branchData[i].subjects.reduce(
-        (a, s) => a + Number(s.credits),
-        0
-      );
-    }
-  }
-  return total;
-}
-
-/* Render the table of subjects for the selected branch/semester */
-function renderSemester(branchName, semId) {
-  const branchData = ALL_DATA[branchName];
-  if (!branchData) return;
-  const sem = branchData.find((s) => s.id === Number(semId));
-  if (!sem) return;
-
-  semesterTitle.textContent = `${ordinal(sem.id)} Semester (${branchName})`; // Add branch name
-  const tbl = document.createElement("table");
-  tbl.innerHTML = `
-    <thead>
-      <tr>
-        <th>Course Code</th>
-        <th>Subject</th>
-        <th class="credits-col">Credits</th>
-        <th>Grade</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  `;
-  const tbody = tbl.querySelector("tbody");
-
-  sem.subjects.forEach((sub) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="code">${escapeHtml(sub.code)}</td>
-      <td class="name">${escapeHtml(sub.name)}</td>
-      <td class="credits">${sub.credits}</td>
-      <td class="select"><select class="grade" data-credits="${
-        sub.credits
-      }" data-code="${escapeHtml(sub.code)}" aria-label="Grade for ${escapeHtml(
-      sub.name
-    )}"></select></td>
-    `;
-    tbody.appendChild(tr);
-    const select = tr.querySelector("select.grade");
-
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "-- select --";
-    select.appendChild(placeholder);
-
-    GRADES.forEach((g) => {
-      const o = document.createElement("option");
-      o.value = String(g.value);
-      o.textContent = g.label;
-      select.appendChild(o);
-    });
-
-    // default A++
-    select.value = "10";
-    select.addEventListener("change", computeSGPA);
-  });
-
-  subjectsArea.innerHTML = "";
-  subjectsArea.appendChild(tbl);
-
-  const semCredits = sumCreditsOfSemester(branchName, sem.id);
-  semCreditsEl.textContent = semCredits;
-  const prevCredits = sumCreditsUpTo(branchName, sem.id);
-  prevTotalCreditsEl.textContent = prevCredits;
-
-  creditsUsedPrev.textContent = prevCredits;
-  creditsUsedCur.textContent = semCredits;
-
-  // Reset CGPA fields on semester change
-  cgpaOut.textContent = "—";
-  prevCgpaInput.value = "";
-
-  computeSGPA();
-}
-
-/* Calculate the SGPA based on current grade selections */
-function computeSGPA() {
-  const selects = subjectsArea.querySelectorAll("select.grade");
-  let num = 0,
-    den = 0;
-  selects.forEach((s) => {
-    const val = s.value;
-    const c = Number(s.getAttribute("data-credits"));
-    if (val !== "") {
-      const g = Number(val);
-      num += g * c;
-      den += c;
-    }
-  });
-  if (den === 0) {
-    sgpaDisplay.textContent = "—";
-    curSgpaInput.value = "";
-    return;
-  }
-  const sgpa = Math.round((num / den) * 100) / 100;
-  sgpaDisplay.textContent = sgpa.toFixed(2);
-  curSgpaInput.value = sgpa.toFixed(2);
-}
-
-/* Calculate the new CGPA */
-function computeCGPA() {
-  const prevCgpa = parseFloat(prevCgpaInput.value);
-  if (isNaN(prevCgpa)) {
-    alert("Enter a valid previous CGPA (e.g. 7.35).");
-    prevCgpaInput.focus();
-    return;
-  }
-  const curSgpa = parseFloat(curSgpaInput.value);
-  if (isNaN(curSgpa)) {
-    alert("Compute SGPA first.");
-    return;
-  }
-
-  const selectedBranch = branchSelect.value; // Get current branch
-  const semId = Number(semesterSelect.value);
-  const prevCredits = sumCreditsUpTo(selectedBranch, semId);
-  const curCredits = sumCreditsOfSemester(selectedBranch, semId);
-
-  const numerator = prevCgpa * prevCredits + curSgpa * curCredits;
-  const denom = prevCredits + curCredits;
-  const newCgpa =
-    denom === 0
-      ? Math.round(curSgpa * 100) / 100
-      : Math.round((numerator / denom) * 100) / 100;
-
-  cgpaOut.textContent = newCgpa.toFixed(2);
-  creditsUsedPrev.textContent = prevCredits;
-  creditsUsedCur.textContent = curCredits;
-}
-
-/* Reset all grades in the current view to A++ */
-function resetGrades() {
-  subjectsArea
-    .querySelectorAll("select.grade")
-    .forEach((s) => (s.value = "10"));
-  computeSGPA();
-}
-
-/* Copy the current results to the clipboard */
-async function copyResult() {
-  const selectedBranch = branchSelect.value;
-  const semId = Number(semesterSelect.value);
-  const semName = `${ordinal(semId)} Semester (${selectedBranch})`;
-  const sgpa = curSgpaInput.value || sgpaDisplay.textContent;
-  const cgpa = cgpaOut.textContent || "—";
-
-  const txt = `${semName}\nSGPA: ${sgpa}\nNew CGPA: ${cgpa}`;
-
-  try {
-    await navigator.clipboard.writeText(txt);
-    alert("Result copied to clipboard.");
-  } catch {
-    alert("Copy failed.");
-  }
-}
-
-/* Prepare the print-only summary card */
-function preparePrint() {
-  const selectedBranch = branchSelect.value;
-  const semId = Number(semesterSelect.value);
-  printSemesterName.textContent = `${ordinal(
-    semId
-  )} Semester (${selectedBranch})`;
-  printDate.textContent = new Date().toLocaleString();
-
-  const sgpa = curSgpaInput.value || sgpaDisplay.textContent;
-  const cgpa = cgpaOut.textContent || "—";
-
-  printMetrics.innerHTML = `
-    <div style="display:flex;gap:12px;align-items:center; margin-bottom: 8px;">
-      <div style="flex:1">
-        <div style="font-size:13px;color:#333">SGPA</div>
-        <div style="font-size:20px;font-weight:800;color:var(--accent)">${escapeHtml(
-          String(sgpa)
-        )}</div>
-      </div>
-      <div style="flex:1">
-        <div style="font-size:13px;color:#333">New CGPA</div>
-        <div style="font-size:20px;font-weight:800;color:var(--accent)">${escapeHtml(
-          String(cgpa)
-        )}</div>
-      </div>
-    </div>
-    <div class="footer-brand" style="margin-top: 10px; display: block; color: #000 !important;">
-      Designed & Developed by Prashant Jain
-    </div>
-  `;
-}
-
-/* Utility to escape HTML characters */
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"]/g, function (m) {
-    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m];
-  });
-}
-
-/* === Event Listeners & Initial Page Load === */
-
-// Wire up event listeners
-branchSelect.addEventListener("change", () => {
-  const selectedBranch = branchSelect.value;
-  populateSemesters(selectedBranch); // Update semester list
-  const firstSemId = semesterSelect.value;
-  if (firstSemId) {
-    renderSemester(selectedBranch, Number(firstSemId));
-  }
+window.addEventListener("DOMContentLoaded", () => {
+  const fallback = document.getElementById("fallbackTable");
+  if (fallback) fallback.remove();
 });
-
-semesterSelect.addEventListener("change", () => {
-  const selectedBranch = branchSelect.value;
-  renderSemester(selectedBranch, Number(semesterSelect.value));
-});
-
-calcCgpaBtn.addEventListener("click", computeCGPA);
-resetBtn.addEventListener("click", resetGrades);
-exportBtn.addEventListener("click", copyResult);
-
-printBtn.addEventListener("click", () => {
-  preparePrint();
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      window.print();
-    });
-  });
-});
-
-window.addEventListener("beforeprint", preparePrint);
-
-[prevCgpaInput, curSgpaInput].forEach((inp) => {
-  inp.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      calcCgpaBtn.click();
-    }
-  });
-});
-
-// Perform initial page load
-populateBranches();
-
-// Default to "CSE" or the first available branch
-const defaultBranch = "CSE";
-branchSelect.value = defaultBranch;
-
-populateSemesters(defaultBranch); // Populate its semesters
-
-const defaultSem = semesterSelect.value; // Get the first semester
-if (defaultSem) {
-  renderSemester(defaultBranch, Number(defaultSem)); // Render it
-}

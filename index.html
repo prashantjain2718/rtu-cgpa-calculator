@@ -4,7 +4,6 @@
     <title>RTU CGPA Calculator | Accurate SGPA & CGPA Calculator</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-
     <meta
       name="description"
       content="RTU CGPA Calculator: Instantly calculate SGPA, CGPA & Percentage for Rajasthan Technical University. Supports CSE, IT, AI&DS, ECE, EE, ME branches."
@@ -21,6 +20,13 @@
       content="Calculate SGPA, CGPA and grades instantly using RTU's official grading system."
     />
     <meta property="og:type" content="website" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script type="application/ld+json">
       {
@@ -39,16 +45,34 @@
   </head>
 
   <body>
+    <div class="bg-glow"></div>
+
     <div class="container">
-      <div class="print-header">
-        <h1>RTU Semester Grade Report</h1>
-        <div class="print-meta" id="printMetaDate"></div>
+      
+      <div class="print-only-header">
+        <div class="print-title">
+          <h1>RTU Semester Grade Report</h1>
+          <div class="print-timestamp" id="printMetaDate"></div>
+        </div>
+        
+        <div class="student-details-grid">
+          <div class="detail-box">
+            <span class="label">Name:</span>
+            <span class="line">____________________________</span>
+          </div>
+          <div class="detail-box">
+            <span class="label">Roll No:</span>
+            <span class="line">____________________________</span>
+          </div>
+        </div>
       </div>
 
-      <div class="card">
+      <div class="card glass-effect">
         <header>
-          <div class="logo">RTU</div>
-          <div>
+          <div class="logo-container">
+            <div class="logo"><i class="fa-solid fa-graduation-cap"></i></div>
+          </div>
+          <div class="header-text">
             <h1>RTU CGPA Calculator</h1>
             <div class="lead">
               Official grading system for CSE, IT, AI&DS, ME, ECE, EE
@@ -58,36 +82,41 @@
 
         <div class="controls">
           <div class="control-group">
-            <label for="branchSelect">Branch</label>
-            <select id="branchSelect"></select>
+            <label for="branchSelect"><i class="fa-solid fa-code-branch"></i> Branch</label>
+            <div class="select-wrapper">
+              <select id="branchSelect"></select>
+            </div>
           </div>
           <div class="control-group">
-            <label for="semesterSelect">Semester</label>
-            <select id="semesterSelect"></select>
+            <label for="semesterSelect"><i class="fa-solid fa-book-open"></i> Semester</label>
+            <div class="select-wrapper">
+              <select id="semesterSelect"></select>
+            </div>
           </div>
           <div style="flex-grow: 1"></div>
-          <button id="resetGrades" class="btn-secondary">Reset</button>
+          <button id="resetGrades" class="btn-secondary">
+            <i class="fa-solid fa-rotate-right"></i> Reset
+          </button>
         </div>
 
         <div class="calculator-grid">
           <div class="subjects-container">
             <div class="semester-header">
               <span class="sem-title" id="semesterTitle">Loading...</span>
-              <span class="credits-badge" id="totalCreditsBadge"
-                >0 Credits</span
-              >
+              <span class="credits-badge" id="totalCreditsBadge">0 Credits</span>
             </div>
             <div id="subjectsArea"></div>
           </div>
 
           <aside class="results-panel">
             <div class="result-box">
-              <div>
+              <div class="sgpa-wrapper">
                 <div class="result-label">Your SGPA</div>
                 <div class="sgpa-display" id="sgpaDisplay">0.00</div>
               </div>
 
               <div class="cgpa-tools">
+                <div class="input-label-group">Calculate CGPA (Optional)</div>
                 <div class="input-row">
                   <input
                     id="prevCgpa"
@@ -100,7 +129,6 @@
                     type="text"
                     placeholder="SGPA"
                     readonly
-                    style="background: #111827; color: #64748b"
                   />
                 </div>
                 <button id="calcCgpaBtn" class="btn-primary">
@@ -109,7 +137,7 @@
               </div>
 
               <div class="stats-grid">
-                <div class="stat-row">
+                <div class="stat-row highlight">
                   <span>New CGPA</span> <span id="cgpaOut">—</span>
                 </div>
                 <div class="stat-row">
@@ -121,163 +149,117 @@
               </div>
             </div>
 
-            <div class="input-row">
-              <button id="exportBtn" class="btn-secondary" style="width: 50%">
+            <div class="action-buttons">
+              <button id="exportBtn" class="btn-outline">
                 Copy Result
               </button>
-              <button id="printBtn" class="btn-secondary" style="width: 50%">
-                Print Report
+              <button id="printBtn" class="btn-outline">
+                <i class="fa-solid fa-print"></i> Print Report
               </button>
             </div>
           </aside>
         </div>
       </div>
 
-      <section class="seo-content">
-        <h2>RTU Grading System & Guide</h2>
-        <p>
-          This calculator is designed based on the
-          <strong
-            >Rajasthan Technical University (RTU) Choice Based Credit System
-            (CBCS)</strong
-          >. It helps students accurately calculate their Semester Grade Point
-          Average (SGPA) and Cumulative Grade Point Average (CGPA).
-        </p>
+      <section class="seo-content glass-effect">
+        <div class="seo-header">
+            <h2><i class="fa-solid fa-circle-info"></i> RTU Grading System & Guide</h2>
+        </div>
+        <div class="seo-body">
+            <p>
+              This calculator is designed based on the
+              <strong>Rajasthan Technical University (RTU) Choice Based Credit System (CBCS)</strong>. 
+              It helps students accurately calculate their Semester Grade Point Average (SGPA) and Cumulative Grade Point Average (CGPA).
+            </p>
 
-        <h3>1. RTU Grade to Point Mapping</h3>
-        <p>
-          RTU follows a 10-point grading scale. Below is the official table used
-          for calculations:
-        </p>
+            <h3>1. RTU Grade to Point Mapping</h3>
+            <p>
+              RTU follows a 10-point grading scale. Below is the official table used for calculations:
+            </p>
+            <div class="table-responsive">
+                <table class="seo-table">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Points</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>A++</td><td>10</td><td>Outstanding</td></tr>
+                    <tr><td>A+</td><td>9</td><td>Excellent</td></tr>
+                    <tr><td>A</td><td>8.5</td><td>Very Good</td></tr>
+                    <tr><td>B+</td><td>8</td><td>Good</td></tr>
+                    <tr><td>B</td><td>7.5</td><td>Above Average</td></tr>
+                    <tr><td>C+</td><td>7</td><td>Average</td></tr>
+                    <tr><td>C</td><td>6.5</td><td>Below Average</td></tr>
+                    <tr><td>D+</td><td>6</td><td>Marginal</td></tr>
+                    <tr><td>D</td><td>5.5</td><td>Pass</td></tr>
+                    <tr><td>E+</td><td>5</td><td>Pass (Old Regulation)</td></tr>
+                    <tr><td>E</td><td>4</td><td>Pass (Old Regulation)</td></tr>
+                    <tr><td>F</td><td>0</td><td>Fail</td></tr>
+                </tbody>
+                </table>
+            </div>
 
-        <table class="seo-table">
-          <tr>
-            <th>Grade</th>
-            <th>Points</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td>A++</td>
-            <td>10</td>
-            <td>Outstanding</td>
-          </tr>
-          <tr>
-            <td>A+</td>
-            <td>9</td>
-            <td>Excellent</td>
-          </tr>
-          <tr>
-            <td>A</td>
-            <td>8.5</td>
-            <td>Very Good</td>
-          </tr>
-          <tr>
-            <td>B+</td>
-            <td>8</td>
-            <td>Good</td>
-          </tr>
-          <tr>
-            <td>B</td>
-            <td>7.5</td>
-            <td>Above Average</td>
-          </tr>
-          <tr>
-            <td>C+</td>
-            <td>7</td>
-            <td>Average</td>
-          </tr>
-          <tr>
-            <td>C</td>
-            <td>6.5</td>
-            <td>Below Average</td>
-          </tr>
-          <tr>
-            <td>D+</td>
-            <td>6</td>
-            <td>Marginal</td>
-          </tr>
-          <tr>
-            <td>D</td>
-            <td>5.5</td>
-            <td>Pass</td>
-          </tr>
-          <tr>
-            <td>E+</td>
-            <td>5</td>
-            <td>Pass (Old Regulation)</td>
-          </tr>
-          <tr>
-            <td>E</td>
-            <td>4</td>
-            <td>Pass (Old Regulation)</td>
-          </tr>
-          <tr>
-            <td>F</td>
-            <td>0</td>
-            <td>Fail</td>
-          </tr>
-        </table>
+            <h3>2. Formulas Used</h3>
+            <div class="formula-box">
+              <ul>
+                <li>
+                  <strong>SGPA:</strong> <code>Sum(Credit × Grade Point) / Sum(Total Credits)</code>
+                </li>
+                <li>
+                  <strong>CGPA:</strong> <code>(Prev CGPA × Prev Credits + Current SGPA × Current Credits) / Total Credits</code>
+                </li>
+              </ul>
+            </div>
 
-        <h3>2. Formulas Used</h3>
-        <ul>
-          <li>
-            <strong>SGPA:</strong>
-            <code>Sum(Credit × Grade Point) / Sum(Total Credits)</code>
-          </li>
-          <li>
-            <strong>CGPA:</strong>
-            <code
-              >(Prev CGPA × Prev Credits + Current SGPA × Current Credits) /
-              Total Credits</code
-            >
-          </li>
-        </ul>
+            <h3>3. Example Calculation</h3>
+            <p>
+              If a student scores <strong>A (8.5)</strong> in a 4-credit subject and
+              <strong>B (7.5)</strong> in a 2-credit lab:<br />
+              Total Points = (8.5 × 4) + (7.5 × 2) = 34 + 15 = 49<br />
+              Total Credits = 4 + 2 = 6<br />
+              <strong>SGPA = 49 / 6 = 8.16</strong>
+            </p>
 
-        <h3>3. Example Calculation</h3>
-        <p>
-          If a student scores <strong>A (8.5)</strong> in a 4-credit subject and
-          <strong>B (7.5)</strong> in a 2-credit lab:<br />
-          Total Points = (8.5 × 4) + (7.5 × 2) = 34 + 15 = 49<br />
-          Total Credits = 4 + 2 = 6<br />
-          <strong>SGPA = 49 / 6 = 8.16</strong>
-        </p>
+            <h3>4. How to Verify Results?</h3>
+            <p>
+              Always compare the calculated SGPA with your official marksheet. You
+              can download your official marksheet from
+              <a
+                href="https://rtu.sumsraj.com"
+                target="_blank"
+                style="color: var(--primary)"
+                >rtu.sumsraj.com</a
+              >
+              or the main
+              <a
+                href="https://rtu.ac.in"
+                target="_blank"
+                style="color: var(--primary)"
+                >rtu.ac.in</a
+              >
+              website by entering your roll number.
+            </p>
 
-        <h3>4. How to Verify Results?</h3>
-        <p>
-          Always compare the calculated SGPA with your official marksheet. You
-          can download your official marksheet from
-          <a
-            href="https://rtu.sumsraj.com"
-            target="_blank"
-            style="color: var(--primary)"
-            >rtu.sumsraj.com</a
-          >
-          or the main
-          <a
-            href="https://rtu.ac.in"
-            target="_blank"
-            style="color: var(--primary)"
-            >rtu.ac.in</a
-          >
-          website by entering your roll number.
-        </p>
-
-        <h3>5. Common Errors</h3>
-        <ul>
-          <li>
-            <strong>Averaging SGPAs:</strong> Don't just add SGPAs and divide by
-            2. You must use the weighted credit formula.
-          </li>
-          <li>
-            <strong>Ignoring Backlogs:</strong> Failed subjects (F grade) count
-            as 0 points but still add to the credit total, lowering SGPA
-            significantly.
-          </li>
-        </ul>
+            <h3>5. Common Errors</h3>
+            <ul>
+              <li>
+                <strong>Averaging SGPAs:</strong> Don't just add SGPAs and divide by
+                2. You must use the weighted credit formula.
+              </li>
+              <li>
+                <strong>Ignoring Backlogs:</strong> Failed subjects (F grade) count
+                as 0 points but still add to the credit total, lowering SGPA
+                significantly.
+              </li>
+            </ul>
+        </div>
       </section>
 
       <div class="footer-branding">
-        Developed by <strong>Prashant Jain</strong>
+        Developed with <i class="fa-solid fa-heart" style="color: #ef4444;"></i> by <strong>Prashant Jain</strong>
       </div>
     </div>
   </body>

@@ -1,4 +1,4 @@
-# 🎓 RTU CGPA & SGPA Calculator
+# 🎓 RTU CGPA Calculator
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Site-38bdf8?style=for-the-badge&logo=vercel)](https://rtu-cpga-calculator.vercel.app/)
 [![Tech Stack](https://img.shields.io/badge/Tech-HTML5_%7C_CSS3_%7C_JS-yellow?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -32,13 +32,6 @@ It comes pre-loaded with the exact subject codes, names, and credit values for *
 
 ---
 
-## 📸 Interface
-
-| Dark Mode UI | Print Preview (A4) |
-| :---: | :---: |
-| *Clean, responsive dark interface with instant feedback.* | *Optimized black & white layout for official printing.* |
-
----
 
 ## 🔢 Official RTU Grading Scale
 

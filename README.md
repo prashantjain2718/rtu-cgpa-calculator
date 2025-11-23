@@ -76,11 +76,24 @@ Since this is a static web app, you don't need `npm` or a backend server.
 
 ## 📂 Project Structure
 
+```text
 rtu-cgpa-calculator/
-├── index.html      # Main structure, SEO meta tags, and JSON-LD
-├── styles.css      # Dark theme variables, responsive grid, and @media print
-├── script.js       # Branch data (JSON structure), event listeners, and logic
-└── README.md       # Documentation
+├── index.html      # Main application interface
+│                   ├── SEO Meta Tags (Open Graph, Keywords, Description)
+│                   ├── JSON-LD Schema for Rich Results
+│                   └── Calculator UI (Controls, Subject Table, Results Panel)
+│
+├── styles.css      # Styling and Design
+│                   ├── CSS Variables for the "Slate & Cyan" Dark Theme
+│                   ├── Responsive Flexbox & Grid Layouts for Mobile/Desktop
+│                   └── @media print Styles (A4 Optimized Report Format)
+│
+├── script.js       # Core Logic and Data
+│                   ├── ALL_DATA Const: Complete Subject Database (Sem 1-8)
+│                   ├── SGPA & CGPA Calculation Algorithms
+│                   └── Event Listeners (Dynamic Rendering, Print, Clipboard)
+│
+└── README.md       # Project Documentation
 
 ## 🤝 Contributing
 
